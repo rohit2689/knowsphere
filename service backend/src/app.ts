@@ -4,9 +4,10 @@ import cors from "cors";
 import helmet from "helmet";
 import { ZodError } from "zod";
 import authRouter from "./routes/auth.js";
-import { HttpError } from "./lib/errors.js";
 import postsRouter from "./routes/posts.js";
 import { requireAuth } from "./middleware/auth.js";
+import { authLimiter, apiLimiter } from "./middleware/rateLimit.js";
+import { HttpError } from "./lib/errors.js";
 
 export const app = express();
 
@@ -18,7 +19,8 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
-app.use("/auth", authRouter);
+app.use("/auth", authLimiter, authRouter);
+app.use("/posts", requireAuth, apiLimiter, postsRouter);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof ZodError) {
@@ -35,6 +37,3 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
   res.status(500).json({ error: "Internal server error" });
 });
-
-app.use("/posts", requireAuth, postsRouter);
-
