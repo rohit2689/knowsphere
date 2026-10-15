@@ -140,3 +140,9 @@ After:
 - Total requests: approximately 82,000
 - Note: Same query repeated; Redis cache likely warm.
 - Environment: Local development
+
+Metric	1 instance — avg of 2 runs	3 instances — avg of 2 runs
+Requests/sec	1,682.7	2,171.3
+Average latency	29.28 ms	22.56 ms
+99th percentile latency	81–84 ms	59–66 ms
+Maximum latency	345–482 ms	187–196 ms
