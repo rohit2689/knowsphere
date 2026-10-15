@@ -5,7 +5,7 @@ import { env } from "../config/env.js";
 export const redis = env.REDIS_URL
   ? new Redis(env.REDIS_URL, {
       maxRetriesPerRequest: 1,
-      commandTimeout: 1000, // if any command runs more than 1 second then it will fail
+      commandTimeout: 3000, // if any command runs more than 1 second then it will fail
     })
   : null;
 
